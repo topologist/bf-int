@@ -31,13 +31,11 @@ void doBF(FILE *fh)
 	{
 		c = fgetc(fh);
 		if (interpretBF(fh, c) == 1) return;
-		// std::cout << "\t\t(" << ftell(fh) << ")\n";
 	}
 }
 
 int interpretBF(FILE *fh, char c)
 {
-	std::cout << c;
 	switch (c)
 	{
 	case EOF:
@@ -45,20 +43,16 @@ int interpretBF(FILE *fh, char c)
 	case '>':
 		if (p + 1 - bf < ARRAY_SIZE)
 			++p;
-		// std::cout << "> [" << (long)(p-bf) << "," << static_cast<int>(*p) << "]\n";
 		break;
 	case '<':
 		if (p > bf)
 			--p;
-		// std::cout << "< [" << (long)(p-bf) << "," << static_cast<int>(*p) << "]\n";
 		break;
 	case '+':
 		++(*p);
-		// std::cout << "+ [" << static_cast<int>(*p) << "]\n";
 		break;
 	case '-':
 		--(*p);
-		// std::cout << "- [" << static_cast<int>(*p) << "]\n";
 		break;
 	case '.':
 		std::cout << *p;
@@ -75,8 +69,6 @@ int interpretBF(FILE *fh, char c)
 		else
 			nestl--;
 		break;
-	//default:
-		// std::cout << "error: If you tried a nested loop, those don't work yet. (" << c << ")\n";
 	}
 	return 0;
 }
