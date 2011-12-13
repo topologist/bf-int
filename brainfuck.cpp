@@ -30,41 +30,18 @@ void doBF(FILE *fh)
 	while (true)
 	{
 		c = fgetc(fh);
-		char n = *p;
-		switch(c)
-		{
-		case EOF:
-			return;
-		case '[':
-			pos = ftell(fh);
-			while (n != 0)
-			{
-				c = fgetc(fh);
-				if (c != ']')
-				{
-					interpretBF(c);
-				} else {
-					n = *p;
-					if (n == 0) {
-						break;
-					} else {
-						fseek(fh, pos, SEEK_SET);
-					}
-				}
-			}
-		default:
-			interpretBF(c);
-			// std::cout << "\t\t(" << ftell(fh) << ")\n";
-		}
+		if (interpretBF(fh, c) == 1) return;
+		// std::cout << "\t\t(" << ftell(fh) << ")\n";
 	}
 }
 
-void interpretBF(char c)
+int interpretBF(FILE *fh, char c)
 {
+	std::cout << c;
 	switch (c)
 	{
 	case EOF:
-		return;
+		return 1;
 	case '>':
 		if (p + 1 - bf < ARRAY_SIZE)
 			++p;
@@ -89,9 +66,17 @@ void interpretBF(char c)
 	case ',':
 		std::cin.get(*p);
 		break;
-	case '\n': case '\r': case ']':
-		return;
-	default:
-		std::cout << "error: If you tried a nested loop, those don't work yet. (" << c << ")\n";
+	case '[':
+		pos[nestl++] = ftell(fh);
+		break;
+	case ']':
+		if (*p != 0)
+			fseek(fh, pos[nestl-1], SEEK_SET);
+		else
+			nestl--;
+		break;
+	//default:
+		// std::cout << "error: If you tried a nested loop, those don't work yet. (" << c << ")\n";
 	}
+	return 0;
 }

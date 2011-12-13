@@ -4,10 +4,11 @@
 char bf[ARRAY_SIZE];
 char *p = bf;
 char c;
-long pos;
+long pos[15];
+short nestl = 0;
 
 void doBF(FILE *);
-void interpretBF(char);
+int interpretBF(FILE *, char);
 
 /* TODO:
 	- Most important (and all that I can think of right now): nested loops.
